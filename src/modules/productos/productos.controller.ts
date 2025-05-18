@@ -6,9 +6,9 @@ import { UpdateProductoDto } from './dto/update-producto.dto';
 
 @Controller('productos')
 export class ProductosController {
-  constructor(private readonly productosService: ProductosService) {}
+  constructor(private readonly productosService: ProductosService) { }
 
-  @MessagePattern('createProducto')
+  @MessagePattern('create_producto')
   create(@Payload() createProductoDto: CreateProductoDto) {
     return this.productosService.create(createProductoDto);
   }
@@ -20,16 +20,16 @@ export class ProductosController {
 
   @MessagePattern('find_one_producto')
   findOne(@Payload() id: number) {
-    console.log('MSPROD', id)
     return this.productosService.findOne(id);
   }
 
-  @MessagePattern('updateProducto')
-  update(@Payload() updateProductoDto: UpdateProductoDto) {
-    return this.productosService.update(updateProductoDto.id, updateProductoDto);
+  @MessagePattern('update_producto')
+  update(@Payload() payload: { id: number, updateProductoDto: UpdateProductoDto }) {
+    const { id, updateProductoDto } = payload;
+    return this.productosService.update(id, updateProductoDto);
   }
 
-  @MessagePattern('removeProducto')
+  @MessagePattern('remove_producto')
   remove(@Payload() id: number) {
     return this.productosService.remove(id);
   }
